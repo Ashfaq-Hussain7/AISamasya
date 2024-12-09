@@ -6,7 +6,6 @@ const BlindPage = () => {
   const [recognition, setRecognition] = useState(null);
   const [speechSynthesis, setSpeechSynthesis] = useState(null);
   const [audioReady, setAudioReady] = useState(false); // Track if the audio is allowed to play
-  const blupSound = useRef(new Audio('C:/Users/ashfa/OneDrive/Desktop/AISamasya/frontend/src/bloop-2-186531.mp3'));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,7 +85,7 @@ const BlindPage = () => {
 
   const handleHover = (text) => {
     if (audioReady) {
-      blupSound.current.play(); // Play the blup sound only after interaction
+      // Play the blup sound only after interaction
     }
     speakText(text); // Speak the text when hovering over elements
   };
