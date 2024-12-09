@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from PyPDF2 import PdfReader
@@ -22,8 +23,12 @@ CORS(app)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Google Generative AI Configuration
-GENAI_API_KEY = "AIzaSyBZ2nlGyAeDF9NGGh5CPAwJVL3MIJAb0Cg"
+load_dotenv()
+# Fetch API key from environment variables
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
+
+if not GENAI_API_KEY:
+    raise ValueError("GENAI_API_KEY is not set in the .env file")
 genai.configure(api_key=GENAI_API_KEY)
 
 generation_config_scene = {
