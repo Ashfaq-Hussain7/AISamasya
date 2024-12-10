@@ -152,7 +152,7 @@ const NoteMakingPage = () => {
         onMouseEnter={() => handleHover("Start recording")}
         onClick={toggleRecording}
       >
-        <h1 className="text-6xl font-bold text-white">
+        <h1 className="text-7xl font-bold text-white">
           {isListening ? "Pause Recording" : "Start Recording"}
         </h1>
       </div>
@@ -166,7 +166,7 @@ const NoteMakingPage = () => {
           resetTimer();
         }}
       >
-        <h1 className="text-6xl font-bold text-white">Stop Recording</h1>
+        <h1 className="text-7xl font-bold text-white">Stop Recording</h1>
       </div>
 
       {/* Third Quartile: Frequency Bar Visualization + Timer */}
@@ -196,7 +196,7 @@ const NoteMakingPage = () => {
         onMouseEnter={() => handleHover("Go back to the home page")}
         onClick={() => (window.location.href = "/visual")}
       >
-        <h1 className="text-6xl font-bold text-white">Home</h1>
+        <h1 className="text-7xl font-bold text-white">Home</h1>
       </div>
     </div>
   );

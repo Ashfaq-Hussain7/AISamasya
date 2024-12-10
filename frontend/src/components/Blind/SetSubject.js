@@ -88,7 +88,7 @@ const SetSubject = () => {
           <strong>Transcription:</strong> {transcription || 'Listening...'}
         </p>
       </div>
-     
+
       <button
         onClick={handleSubmit}
         disabled={!transcription}
