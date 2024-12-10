@@ -16,6 +16,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 
+from llm_response import get_response , ask_mor
+
+
 # Flask App Configuration
 app = Flask(__name__)
 CORS(app)
@@ -56,7 +59,7 @@ text_model = genai.GenerativeModel(
     generation_config=generation_config_text
 )
 
-# Embedding Model Initialization
+Embedding Model Initialization
 embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vectorstore = None  # FAISS Vector Store initialized dynamically
 retriever = None
@@ -220,6 +223,34 @@ def summarize_document():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route('/api/scrap_subject', methods=['POST'])
+def scrap_sub():
+    try:
+        data = request.json
+        subject = data.get('subject')
+        print(subject)
+
+        if not subject:
+            return jsonify({'error': 'Subject not provided'}), 400
+
+        description = get_response(subject)
+        print(description)
+
+        return jsonify({'success': True, 'description': description})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/ask_more', methods=['POST'])
+def handle_ask_more():
+    """
+    Endpoint to handle conversation queries.
+    """
+    data = request.get_json()
+    query = data.get('query')
+    context = data.get('conversation_history')
+    
+    response = ask_mor(context,query)
+    return jsonify(response)
 # ----------------- Run Flask App -----------------
 if __name__ == '__main__':
     app.run(debug=True)
