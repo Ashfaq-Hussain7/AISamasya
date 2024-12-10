@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 
 const CameraPage = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   // States
   const [sceneDescription, setSceneDescription] = useState('');
@@ -137,11 +138,12 @@ const CameraPage = () => {
   };
 
   const handleNo = () => {
+    window.location.reload();
     console.log('User said no, no learning content will be displayed or narrated.');
   };
 
   const handleBackToHome = () => {
-    window.location.href = 'http://localhost:3000/visual';
+    navigate('/visual')
   };
 
   const handleHover = (text) => {
