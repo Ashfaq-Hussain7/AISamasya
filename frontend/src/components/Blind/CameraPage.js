@@ -16,23 +16,21 @@ const CameraPage = () => {
   const [showLearning, setShowLearning] = useState(false);
 
   // Control states
-  const [sceneDescribed, setSceneDescribed] = useState(false); // To ensure scene is narrated once
-  const [learningNarrated, setLearningNarrated] = useState(false); // Ensure learning is narrated once
-  const [showButtons, setShowButtons] = useState(false); // Show Yes/No buttons after description
+  const [sceneDescribed, setSceneDescribed] = useState(false);
+  const [learningNarrated, setLearningNarrated] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
 
-  const captureAfter = location.state?.captureAfter || 3000; // Default capture time
+  const captureAfter = location.state?.captureAfter || 3000;
 
   useEffect(() => {
     let stream = null;
     const startCamera = async () => {
       try {
-        // Start camera
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
 
-        // Capture after delay
         setTimeout(() => {
           captureImage(stream);
         }, captureAfter);
@@ -62,11 +60,9 @@ const CameraPage = () => {
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Convert image to blob
     const imageData = canvas.toDataURL('image/png');
     const blob = dataURLtoBlob(imageData);
 
-    // Turn off camera immediately after capturing
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
@@ -110,12 +106,10 @@ const CameraPage = () => {
       setLearningContent(data.learning || '');
       setIsProcessing(false);
 
-      // Narrate the scene description once
       if (!sceneDescribed && data.scene_description) {
         setSceneDescribed(true);
         narrateText(data.scene_description, () => {
-          // After narration finishes, show buttons
-          setShowButtons(true);
+          setShowButtons(true); // Show buttons after description
         });
       }
     } catch (err) {
@@ -144,56 +138,84 @@ const CameraPage = () => {
 
   const handleNo = () => {
     console.log('User said no, no learning content will be displayed or narrated.');
-    // Do nothing else
   };
 
   const handleBackToHome = () => {
     window.location.href = 'http://localhost:3000/visual';
   };
 
-  return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-      {isProcessing && <p className="mb-4">Processing image, please wait...</p>}
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+  const handleHover = (text) => {
+    // Stop any ongoing speech before starting a new one
+    window.speechSynthesis.cancel();
 
-      {!isProcessing && !error && sceneDescription && (
-        <div className="mb-4 text-center max-w-md">
-          <p>{sceneDescription}</p>
-          {hasLearning && !showLearning && showButtons && (
-            <div className="flex space-x-4 mt-4">
+    // Narrate the button text
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1.0;
+    utter.pitch = 1.0;
+    utter.volume = 1.0;
+    window.speechSynthesis.speak(utter);
+  };
+
+  return (
+    <div className="h-screen flex p-6 bg-black text-white transition-all duration-200 ease-in-out">
+      {/* Left Half for Scene Description */}
+      <div className="flex-1 flex flex-col items-start justify-center p-6">
+        {isProcessing && <p className="mb-6 text-4xl">Processing image, please wait...</p>}
+        {error && <p className="text-red-500 mb-6 text-4xl">{error}</p>}
+
+        {!isProcessing && !error && sceneDescription && (
+          <div className="mb-8 text-center max-w-2xl">
+            <p className="text-5xl">{sceneDescription}</p>
+            {hasLearning && !showLearning && showButtons && (
+              <div className="flex flex-col items-start mt-10 space-y-4">
+                {/* No Yes/No buttons here initially */}
+              </div>
+            )}
+          </div>
+        )}
+
+        {showLearning && learningContent && (
+          <div className="mb-8 text-center max-w-2xl bg-white text-black p-8 rounded-xl shadow-lg transition-all duration-500">
+            <h2 className="font-bold text-5xl mb-4">More Information:</h2>
+            <p className="text-4xl">{learningContent}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Right Half for Buttons */}
+      <div className="flex-1 flex flex-col justify-between p-6">
+        <div className="flex flex-col space-y-4 h-full">
+          {/* Buttons appear after the scene description */}
+          {showButtons && (
+            <>
               <button
+                onMouseEnter={() => handleHover('Yes button, click to continue')}
                 onClick={handleYes}
-                className="px-6 py-3 bg-green-600 text-white font-semibold rounded hover:bg-green-700"
+                className="w-full h-1/3 bg-green-600 text-white font-extrabold text-4xl rounded-xl hover:bg-green-700 transform hover:scale-110 transition-transform duration-200"
               >
                 Yes
               </button>
               <button
+                onMouseEnter={() => handleHover('No button, to stop')}
                 onClick={handleNo}
-                className="px-6 py-3 bg-red-600 text-white font-semibold rounded hover:bg-red-700"
+                className="w-full h-1/3 bg-red-600 text-white font-extrabold text-4xl rounded-xl hover:bg-red-700 transform hover:scale-110 transition-transform duration-300"
               >
                 No
               </button>
-            </div>
+              <button
+                onMouseEnter={() => handleHover('Back to Home button')}
+                onClick={handleBackToHome}
+                className="w-full h-1/3 bg-blue-600 text-white font-extrabold text-4xl rounded-xl flex items-center justify-center hover:bg-blue-700 transform hover:scale-110 transition-transform duration-300"
+              >
+                Back to Home
+              </button>
+            </>
           )}
         </div>
-      )}
-
-      {showLearning && learningContent && (
-        <div className="mb-4 text-center max-w-md bg-white p-4 rounded shadow">
-          <h2 className="font-bold mb-2">More Information:</h2>
-          <p>{learningContent}</p>
-        </div>
-      )}
+      </div>
 
       <video ref={videoRef} autoPlay className="hidden"></video>
       <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
-
-      <button
-        onClick={handleBackToHome}
-        className="mt-4 px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-      >
-        Back to Home
-      </button>
     </div>
   );
 };
