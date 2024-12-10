@@ -85,7 +85,6 @@ const BlindPage = () => {
 
   const handleHover = (text) => {
     if (audioReady) {
-      // Play the blup sound only after interaction
     }
     speakText(text); // Speak the text when hovering over elements
   };
@@ -94,6 +93,9 @@ const BlindPage = () => {
     setAudioReady(true); // Mark audio as ready to play
   };
 
+  const topicSelection = () =>{
+    navigate('/subject_b')
+  }
   return (
     <div
       className="h-screen bg-black grid grid-cols-2 grid-rows-2 gap-4 p-6"
@@ -103,7 +105,7 @@ const BlindPage = () => {
       <div
         className="flex flex-col items-center justify-center p-8 bg-gradient-to-r from-[#4B4376] to-[#4B4376] rounded-xl shadow-2xl cursor-pointer transform transition-transform duration-300 hover:scale-110"
         onMouseEnter={() => handleHover('This is the topic selection feature.')}
-        onClick={startListening}
+        onClick={topicSelection}
       >
         <h1 className="text-3xl font-bold text-white">Topic Selection</h1>
       </div>

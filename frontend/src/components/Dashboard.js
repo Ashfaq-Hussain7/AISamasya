@@ -32,7 +32,7 @@ const Dashboard = () => {
 
       // Determine the route based on selected disabilities
       if (selectedDisabilities.includes('Visual Impairment')) {
-        navigate('/subject_b', { state: { name, disabilities: selectedDisabilities } });
+        navigate('/visual', { state: { name, disabilities: selectedDisabilities } });
       } else if (selectedDisabilities.includes('Hearing Impairment')) {
         navigate('/audial', { state: { name, disabilities: selectedDisabilities } });
       } else {
