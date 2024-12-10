@@ -59,7 +59,8 @@ text_model = genai.GenerativeModel(
     generation_config=generation_config_text
 )
 
-#Embedding Model Initialization
+<<<<<< main
+
 embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vectorstore = None  # FAISS Vector Store initialized dynamically
 retriever = None
@@ -253,4 +254,4 @@ def handle_ask_more():
     return jsonify(response)
 # ----------------- Run Flask App -----------------
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
