@@ -3,24 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Mic, StopCircle, X } from 'lucide-react';
 
 // Dummy API for conversation simulation
-const dummyConversationAPI = {
-    async askMore(query) {
-      const response = await fetch('http://localhost:5000/ask_more/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      return response.json();
-    },
-  };
-  
+
 
 const SubjectInfo = () => {
     const navigate = useNavigate();
@@ -125,8 +108,11 @@ const SubjectInfo = () => {
     }, [initializeSpeechRecognition]);
     
     useEffect(() => {
-      setConversationHistory(prev => [...prev, { type: 'system', text: description }]);
-    }, []);
+        // Only add system context if it's not already in the conversation history
+        if (description && conversationHistory.length === 0) {
+          setConversationHistory([{ type: 'system', text: description }]);
+        }
+      }, [description]);
   
     const handleQuerySubmission = async (query) => {
       // Prevent multiple simultaneous processing
@@ -150,8 +136,8 @@ const SubjectInfo = () => {
       setConversationHistory(prev => [...prev, { type: 'user', text: query }]);
       
       try {
-        // Get AI response
-        const response = await dummyConversationAPI.askMore(query);
+        // Pass full conversation history and query to askMore
+        const response = await dummyConversationAPI.askMore(conversationHistory, query);
         
         // Add AI response to conversation history
         setConversationHistory(prev => [...prev, { type: 'ai', text: response.info }]);
@@ -162,13 +148,13 @@ const SubjectInfo = () => {
         // Restart listening after response
         setIsListening(true);
         if (recognitionRef.current) {
-          recognitionRef.current.start();
+            recognitionRef.current.start();
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error processing query:', error);
-      } finally {
+    } finally {
         isProcessingRef.current = false;
-      }
+    }
     };
   
     const handleStartListening = () => {
@@ -189,7 +175,7 @@ const SubjectInfo = () => {
     };
   
     const handleStopAudio = () => {
-      window.speechSynthesis.cancel();
+
       setIsPlaying(false);
       
       // Immediately start listening
@@ -217,7 +203,7 @@ const SubjectInfo = () => {
       window.speechSynthesis.speak(utterance);
       
       // Navigate away
-      navigate('/subject_b');
+      navigate('/visual');
     };
   
     useEffect(() => {
@@ -231,6 +217,39 @@ const SubjectInfo = () => {
         });
       }
     }, [description, playTextToSpeech]);
+
+    const dummyConversationAPI = {
+        async askMore(conversationHistory, query) {
+            // Transform conversation history to a format the backend expects
+            const formattedHistory = conversationHistory.map(entry => ({
+                role: entry.type,
+                text: entry.text
+            }));
+            console.log(formattedHistory)
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/ask_more', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        conversation_history: formattedHistory,
+                        query 
+                    }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+    
+                return response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        },
+    };  
+      
   
     return (
         <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100">    

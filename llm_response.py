@@ -27,10 +27,11 @@ def get_response(subject):
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
-def ask_mor(query):
+def ask_mor(context,query):
     try:
+        print(context,query)
         response = model.generate_content(
-            f"Provide a brief, friendly response to: {query}"
+            f"the user is a visually impaired person , Provide a brief, friendly response to: {query} where the previous context might be {context} carefully analyse the context if present and respond based on it , if the question is entirely new respond accordingly"
         )
         return {
             "info": response.text.strip() if response.text else "I'm not sure about that."
