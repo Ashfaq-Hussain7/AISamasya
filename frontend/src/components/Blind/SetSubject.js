@@ -77,27 +77,30 @@ const SetSubject = () => {
   };
 
   return (
-    <div className="w-svw min-h-screen bg-black flex items-center justify-center p-6">
-      <div className="max-w-lg bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-8xl font-bold text-gray-800 mb-6">Welcome, {name}!</h1>
-
-        <div className="mt-6">
-          <p className="text-gray-700">
-            <strong>Transcription:</strong> {transcription || 'Listening...'}
-          </p>
-        </div>
-        <button
-          onClick={handleSubmit}
-          disabled={!transcription}
-          aria-label="Submit transcribed subject and proceed to learning page"
-          className="text-8xl w-full mt-6 bg-green-500 text-white py-3 rounded-lg
-                     hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          Submit and Continue
-        </button>
+    <div className="w-full min-h-screen bg-black flex items-center justify-center p-6">
+    <div className="w-full max-w-full h-full bg-white rounded-lg shadow-md p-8 flex flex-col justify-between">
+      <h1 className="text-6xl md:text-9xl font-bold text-gray-800 mb-6 text-center">
+        Welcome, {name}!
+      </h1>
+  
+      <div className="mt-6 flex-grow">
+        <p className="text-lg md:text-2xl text-gray-700 text-center">
+          <strong>Transcription:</strong> {transcription || 'Listening...'}
+        </p>
       </div>
+      
+      <button
+        onClick={handleSubmit}
+        disabled={!transcription}
+        aria-label="Submit transcribed subject and proceed to learning page"
+        className="text-3xl md:text-6xl w-full mt-6 bg-green-500 text-white py-4 rounded-lg
+                   hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        Submit and Continue
+      </button>
     </div>
-  );
+  </div>   
+  )
 };
 
 export default SetSubject;
