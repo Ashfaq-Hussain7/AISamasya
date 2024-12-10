@@ -10,7 +10,6 @@ const NoteMakingPage = () => {
   const audioContextRef = useRef(null); // Audio context
   const animationIdRef = useRef(null); // Animation frame ID
 
-  const blupSound = useRef(new Audio('C:/Users/ashfa/OneDrive/Desktop/AISamasya/frontend/src/bloop-2-186531.mp3'));
   const [audioReady, setAudioReady] = useState(false); // Track if the audio is allowed to play
 
   useEffect(() => {
@@ -136,7 +135,7 @@ const NoteMakingPage = () => {
 
   const handleHover = (text) => {
     if (audioReady) {
-      blupSound.current.play(); // Play the blup sound only after interaction
+// Play the blup sound only after interaction
     }
     speakText(text); // Speak the text when hovering over elements
   };
