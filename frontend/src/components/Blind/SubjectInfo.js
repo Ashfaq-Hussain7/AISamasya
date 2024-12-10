@@ -175,15 +175,17 @@ const SubjectInfo = () => {
     };
   
     const handleStopAudio = () => {
-
-      setIsPlaying(false);
+        // Cancel the speech synthesis to stop any ongoing speech
+        window.speechSynthesis.cancel();
       
-      // Immediately start listening
-      setIsListening(true);
-      if (recognitionRef.current) {
-        recognitionRef.current.start();
-      }
-    };
+        // Immediately start listening
+        setIsPlaying(false); // Make sure 'isPlaying' state is set to false
+        setIsListening(true); // Reset the listening state
+        if (recognitionRef.current) {
+          recognitionRef.current.start(); // Restart listening
+        }
+      };
+      
   
     const handleQuitConversation = () => {
       // Complete stop of all audio and recognition
@@ -249,7 +251,6 @@ const SubjectInfo = () => {
             }
         },
     };  
-      
   
     return (
         <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100">    
@@ -303,7 +304,7 @@ const SubjectInfo = () => {
                 {!isListening ? (
                   <button
                     onClick={handleStartListening}
-                    aria-label="Start Microphone"
+                    // onMouseOver={"Start Microphone"}
                     className="flex-grow w-full bg-blue-500 text-white text-4xl py-10 rounded-2xl hover:bg-blue-600 transition-colors flex items-center justify-center"
                   >
                     <Mic className="mr-6 w-16 h-16" /> Start Mic
