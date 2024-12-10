@@ -107,7 +107,7 @@ const BlindPage = () => {
         onMouseEnter={() => handleHover('This is the topic selection feature.')}
         onClick={topicSelection}
       >
-        <h1 className="text-3xl font-bold text-white">Topic Selection</h1>
+        <h1 className="text-8xl font-bold text-white">Topic Selection</h1>
       </div>
 
       {/* Scene Capture */}
@@ -116,7 +116,7 @@ const BlindPage = () => {
         onMouseEnter={() => handleHover('This is the scene capturing feature.')}
         onClick={startCameraAndCaptureImage}
       >
-        <h1 className="text-3xl font-bold text-white">Scene Capture</h1>
+        <h1 className="text-8xl font-bold text-white">Scene Capture</h1>
       </div>
 
       {/* Document Summarizer */}
@@ -128,7 +128,7 @@ const BlindPage = () => {
           navigate('/doc-summarizer');
         }}
       >
-        <h1 className="text-3xl font-bold text-white">Doc Summarizer</h1>
+        <h1 className="text-8xl font-bold text-white">Doc Summarizer</h1>
       </div>
 
       {/* Note Making */}
@@ -140,7 +140,7 @@ const BlindPage = () => {
           navigate('/note-making');
         }}
       >
-        <h1 className="text-3xl font-bold text-white">Note Making</h1>
+        <h1 className="text-8xl font-bold text-white">Note Making</h1>
       </div>
     </div>
   );
