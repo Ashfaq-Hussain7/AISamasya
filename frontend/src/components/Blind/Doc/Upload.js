@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Upload = () => {
   const [file, setFile] = useState(null);
@@ -6,25 +7,34 @@ const Upload = () => {
   const [status, setStatus] = useState("");
   const [response, setResponse] = useState("");
   const [hoverTimer, setHoverTimer] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate();
   
-  // Text-to-speech function (existing)
   const speak = (text) => {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
       utterance.pitch = 1;
+      
+      // Set playing state while speaking
+      if (!text.startsWith("Click or press")) {
+        setIsPlaying(true);
+        utterance.onend = () => setIsPlaying(false);
+      }
+      
       window.speechSynthesis.speak(utterance);
     }
   };
 
-  // Handle hover audio descriptions
   const handleMouseEnter = useCallback((description) => {
-    const timer = setTimeout(() => {
-      speak(description);
-    }, 1000); // 1 second delay before speaking
-    setHoverTimer(timer);
-  }, []);
+    if (!isPlaying) {
+      const timer = setTimeout(() => {
+        speak(description);
+      }, 1000);
+      setHoverTimer(timer);
+    }
+  }, [isPlaying]);
 
   const handleMouseLeave = useCallback(() => {
     if (hoverTimer) {
@@ -34,7 +44,7 @@ const Upload = () => {
     }
   }, [hoverTimer]);
 
-  // Existing handlers
+  // Rest of your existing handlers remain the same
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -139,6 +149,10 @@ const Upload = () => {
     }
   };
 
+  const goHome = () => {
+    navigate('/visual');
+  };
+
   useEffect(() => {
     if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
       setStatus("Speech recognition is not supported in this browser");
@@ -218,6 +232,20 @@ const Upload = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             <span className="text-2xl font-bold">Summarize Document</span>
+          </button>
+
+          {/* Navigation Button */}
+          <button
+            onClick={goHome}
+            onMouseEnter={() => handleMouseEnter("Click or press Enter to go back")}
+            onMouseLeave={handleMouseLeave}
+            className="w-full h-40 bg-cyan-800 hover:bg-cyan-700 text-white rounded-lg transition-colors duration-200 flex flex-col items-center justify-center"
+            aria-label="Switch to visual mode"
+          >
+            <svg className="w-16 h-16 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span className="text-2xl font-bold">Go Back</span>
           </button>
         </div>
 

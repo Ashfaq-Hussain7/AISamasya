@@ -161,6 +161,7 @@ const CameraPage = () => {
   return (
     <div className="h-screen flex p-6 bg-black text-white transition-all duration-200 ease-in-out">
       {/* Left Half for Scene Description */}
+
       <div className="flex-1 flex flex-col items-start justify-center p-6 overflow-auto	">
         {isProcessing && <p className="mb-6 text-6xl">Processing image, please wait...</p>}
         {error && <p className="text-red-500 mb-6 text-4xl">{error}</p>}
@@ -193,21 +194,23 @@ const CameraPage = () => {
               <button
                 onMouseEnter={() => handleHover('Yes button, click to continue')}
                 onClick={handleYes}
-                className="w-full h-1/3 bg-green-600 text-white font-extrabold text-8xl rounded-xl hover:bg-green-700 transform hover:scale-110 transition-transform duration-200"
+                className="w-full h-1/3 bg-green-600 text-white font-extrabold text-7xl rounded-xl hover:bg-green-700 transform hover:scale-110 transition-transform duration-200"
+
               >
                 Yes
               </button>
               <button
                 onMouseEnter={() => handleHover('No button, to stop')}
                 onClick={handleNo}
-                className="w-full h-1/3 bg-red-600 text-white font-extrabold text-8xl rounded-xl hover:bg-red-700 transform hover:scale-110 transition-transform duration-300"
+                className="w-full h-1/3 bg-red-600 text-white font-extrabold text-7xl rounded-xl hover:bg-red-700 transform hover:scale-110 transition-transform duration-300"
+
               >
                 No
               </button>
               <button
                 onMouseEnter={() => handleHover('Back to Home button')}
                 onClick={handleBackToHome}
-                className="w-full h-1/3 bg-blue-600 text-white font-extrabold text-8xl rounded-xl flex items-center justify-center hover:bg-blue-700 transform hover:scale-110 transition-transform duration-300"
+                className="w-full h-1/3 bg-blue-600 text-white font-extrabold text-7xl rounded-xl flex items-center justify-center hover:bg-blue-700 transform hover:scale-110 transition-transform duration-300"
               >
                 Back to Home
               </button>

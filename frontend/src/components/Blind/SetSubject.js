@@ -88,19 +88,19 @@ const SetSubject = () => {
           <strong>Transcription:</strong> {transcription || 'Listening...'}
         </p>
       </div>
-      
+
       <button
         onClick={handleSubmit}
         disabled={!transcription}
         aria-label="Submit transcribed subject and proceed to learning page"
-        className="text-3xl md:text-6xl w-full mt-6 bg-green-500 text-white py-4 rounded-lg
+        className="text-6xl md:text-6xl w-full mt-6 bg-green-500 text-white py-8 rounded-lg
                    hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
       >
         Submit and Continue
       </button>
     </div>
-  </div>   
-  )
+  </div>
+  );
 };
 
 export default SetSubject;
