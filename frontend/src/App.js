@@ -8,6 +8,7 @@ import SubjectInfo from './components/Blind/SubjectInfo';
 import CameraPage from '../src/components/Blind/CameraPage';
 import DisplayImage from './components/Blind/DisplayImage';
 import NoteMakingPage from './components/Blind/NoteMaking';
+import Upload from './components/Blind/Doc/Upload'
 
 const App = () => {
   return (
@@ -21,6 +22,8 @@ const App = () => {
         <Route path="/audial" element={<DeafPage />} />
         <Route path="/subject_b" element={<SetSubject />} />
         <Route path="/learn" element={<SubjectInfo />} />
+        <Route path="/doc-summarizer" element={<Upload />} />
+
       </Routes>
     </Router>
   );

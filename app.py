@@ -59,7 +59,7 @@ text_model = genai.GenerativeModel(
     generation_config=generation_config_text
 )
 
-Embedding Model Initialization
+# Embedding Model Initialization
 embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vectorstore = None  # FAISS Vector Store initialized dynamically
 retriever = None
