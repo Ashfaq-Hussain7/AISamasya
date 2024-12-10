@@ -85,7 +85,6 @@ const BlindPage = () => {
 
   const handleHover = (text) => {
     if (audioReady) {
-      // blupSound.current.play(); // Play the blup sound only after interaction
     }
     speakText(text); // Speak the text when hovering over elements
   };
